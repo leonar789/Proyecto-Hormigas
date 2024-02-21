@@ -1,4 +1,4 @@
-package proyectohormigas.estructuras;
+package estructuras;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -10,11 +10,12 @@ package proyectohormigas.estructuras;
  * @author Leonardo
  */
 public class Arista {
-    private int distancia;
+    private double distancia;
     private Ciudad ciudad1;
     private Ciudad ciudad2;
     private double feromona;
-    public Arista(Ciudad primeraCiudad,Ciudad segundaCiudad, int d){
+    private double visibilidad;
+    public Arista(Ciudad primeraCiudad,Ciudad segundaCiudad, double d){
         this.ciudad1=primeraCiudad;
         this.ciudad2=segundaCiudad;
         this.distancia=d;
@@ -36,9 +37,13 @@ public class Arista {
         this.feromona=nFeromona;
     }
     public void evaporacion(double constanteEv){
+        System.out.println("Antes de evaporar "+feromona);
         feromona=(1.0-constanteEv)*feromona;
+        System.out.println("Despues de evaporar "+feromona);
     }
-    public void incrementoFeromona(Hormiga hormiga){
-        feromona+=1/hormiga.getRecorrido();
+    public void incrementoFeromona(Hormiga hormiga, double q){
+        feromona+=q/hormiga.getRecorrido();
+        System.out.println("recorrido de la hormiga "+hormiga.getRecorrido());
+        System.out.println("feromona incrementada "+feromona);
     }
 }

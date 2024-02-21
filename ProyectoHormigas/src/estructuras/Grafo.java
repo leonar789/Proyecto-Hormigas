@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package proyectohormigas.estructuras;
+package estructuras;
 
 /**
  *
@@ -22,14 +22,15 @@ public class Grafo<T> {
        vertices= new ListaDoble();
        todasAristas= new ListaDoble();
     }
-    public void agregarVertice(String nombre){
-        Ciudad nCiudad=new Ciudad(nombre);
+    public void agregarVertice(){
+        Ciudad nCiudad=new Ciudad();
         vertices.append(nCiudad);
+        tamaño+=1;
     }
     public ListaDoble getTodasAristas(){
         return this.todasAristas;
     }
-    public void agregarArista(int ciudad1, int ciudad2,int distancia){
+    public void agregarArista(int ciudad1, int ciudad2,double distancia){
         Ciudad seleccion1=(Ciudad) vertices.searchByIndex(ciudad1).get();
         Ciudad seleccion2=(Ciudad) vertices.searchByIndex(ciudad2).get();
         Arista nArista= new Arista(seleccion1,seleccion2,distancia);

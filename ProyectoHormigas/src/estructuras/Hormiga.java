@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package proyectohormigas.estructuras;
+package estructuras;
 
 /**
  *
@@ -23,7 +23,7 @@ public class Hormiga {
     public ListaDoble getAristasVisitadas(){
         return aristasVisitadas;
     }
-    public void iniciarRecorrido(Grafo grafo, int alfa,int beta, int q){
+    public void iniciarRecorrido(Grafo grafo, double alfa,double beta, double q){
         Ciudad ciudadActual=grafo.getInicio();
         while (true){
             ciudadesVisitadas.append((ciudadActual));
@@ -53,7 +53,11 @@ public class Hormiga {
                 }
                 double aleatorio=Math.random();
                 nodoAuxiliar=listaAuxiliar.getFirstNodo();
+                //System.out.println("nuevo aleatorio "+ aleatorio);
+
                 while (nodoAuxiliar!=null){
+                    System.out.println("prob "+(Math.pow(((Arista)(nodoAuxiliar.get())).getFeromona(),alfa)*Math.pow(calcularN((Arista)(nodoAuxiliar.get()),q),beta)/total));
+                    
                     if(aleatorio<=parcial+(Math.pow(((Arista)(nodoAuxiliar.get())).getFeromona(),alfa)*Math.pow(calcularN((Arista)(nodoAuxiliar.get()),q),beta)/total)){
                         recorrido+=((Arista)nodoAuxiliar.get()).getDistancia();
                         aristasVisitadas.append(nodoAuxiliar.get());
@@ -76,8 +80,8 @@ public class Hormiga {
         }
     }
     
-    public double calcularN(Arista arista, int q){
-
+    public double calcularN(Arista arista, double q){
+        
         return q/(arista.getDistancia());
     }
     public double getRecorrido(){
