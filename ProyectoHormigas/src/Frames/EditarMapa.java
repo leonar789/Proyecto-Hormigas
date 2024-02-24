@@ -4,6 +4,13 @@
  */
 package Frames;
 
+import static Frames.PrincipalFrame.vista_grafo;
+import static Frames.PrincipalFrame.visualizador;
+import estructuras.App;
+import java.awt.CardLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author Leonardo
@@ -13,8 +20,29 @@ public class EditarMapa extends javax.swing.JPanel {
     /**
      * Creates new form Iniciar_Simulacion
      */
+    static CardLayout vista_f;
     public EditarMapa() {
         initComponents();
+        this.actualizarComboboxCiudades();
+    }
+    public void actualizarComboboxCiudades(){
+        String[] arregloCiudades=App.grafo.getVertices().ciudadesToArray();
+        String[] arregloAristas=App.grafo.getTodasAristas().aristasToArray();
+        cBoxCiudadesAgregar.setModel(new DefaultComboBoxModel <>(arregloCiudades));
+        cBoxInicio.setModel(new DefaultComboBoxModel <>(arregloCiudades));
+        cBoxMeta.setModel(new DefaultComboBoxModel <>(arregloCiudades));
+        cBoxPrimeraCiudad.setModel(new DefaultComboBoxModel <>(arregloCiudades));
+        cBoxSegundaCiudad.setModel(new DefaultComboBoxModel <>(arregloCiudades));
+        cBoxEliminarCiudad.setModel(new DefaultComboBoxModel <>(arregloCiudades));
+        cBoxEliminarCamino.setModel(new DefaultComboBoxModel <>(arregloAristas));
+        
+    }
+    public void actualizarMiniGrafo(){
+        App.cargarVisualizador();
+        visualizador.add(App.verGrafo(),"vista_pequeña");
+        vista_grafo.show(visualizador, "vista_pequeña");
+        SwingUtilities.updateComponentTreeUI(this);
+        this.repaint();
     }
 
     /**
@@ -28,30 +56,30 @@ public class EditarMapa extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        distanciaNueva = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cBoxCiudadesAgregar = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cBoxPrimeraCiudad = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        distanciaUnir = new javax.swing.JTextField();
+        cBoxEliminarCamino = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        unir = new javax.swing.JButton();
+        agregarCiudad = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        cBoxEliminarCiudad = new javax.swing.JComboBox<>();
+        cBoxSegundaCiudad = new javax.swing.JComboBox<>();
+        eliminarCiudad = new javax.swing.JButton();
+        eliminarCamino = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
-        jComboBox8 = new javax.swing.JComboBox<>();
+        cBoxInicio = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        jComboBox9 = new javax.swing.JComboBox<>();
-        jButton9 = new javax.swing.JButton();
+        cBoxMeta = new javax.swing.JComboBox<>();
+        definir = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -59,11 +87,11 @@ public class EditarMapa extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Unir con");
 
-        jTextField4.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        distanciaNueva.setBackground(new java.awt.Color(204, 204, 204));
+        distanciaNueva.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        distanciaNueva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                distanciaNuevaActionPerformed(evt);
             }
         });
 
@@ -75,10 +103,9 @@ public class EditarMapa extends javax.swing.JPanel {
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Unir Ciudades");
 
-        jComboBox2.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox2.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox2.setMaximumRowCount(111);
-        jComboBox2.setEnabled(false);
+        cBoxCiudadesAgregar.setBackground(new java.awt.Color(204, 204, 204));
+        cBoxCiudadesAgregar.setForeground(new java.awt.Color(0, 0, 0));
+        cBoxCiudadesAgregar.setMaximumRowCount(111);
 
         jLabel13.setFont(new java.awt.Font("Sitka Text", 0, 14)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
@@ -88,75 +115,90 @@ public class EditarMapa extends javax.swing.JPanel {
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Primera Ciudad");
 
-        jComboBox3.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox3.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox3.setMaximumRowCount(111);
-        jComboBox3.setEnabled(false);
+        cBoxPrimeraCiudad.setBackground(new java.awt.Color(204, 204, 204));
+        cBoxPrimeraCiudad.setForeground(new java.awt.Color(0, 0, 0));
+        cBoxPrimeraCiudad.setMaximumRowCount(111);
 
         jLabel15.setFont(new java.awt.Font("Sitka Text", 0, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Distancia");
 
-        jTextField9.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+        distanciaUnir.setBackground(new java.awt.Color(204, 204, 204));
+        distanciaUnir.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        distanciaUnir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
+                distanciaUnirActionPerformed(evt);
             }
         });
 
-        jComboBox4.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox4.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox4.setMaximumRowCount(111);
-        jComboBox4.setEnabled(false);
+        cBoxEliminarCamino.setBackground(new java.awt.Color(204, 204, 204));
+        cBoxEliminarCamino.setForeground(new java.awt.Color(0, 0, 0));
+        cBoxEliminarCamino.setMaximumRowCount(111);
 
         jLabel16.setFont(new java.awt.Font("Sitka Text", 0, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Segunda Ciudad");
 
-        jButton5.setBackground(new java.awt.Color(153, 153, 153));
-        jButton5.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("Unir");
+        unir.setBackground(new java.awt.Color(153, 153, 153));
+        unir.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        unir.setForeground(new java.awt.Color(255, 255, 255));
+        unir.setText("Unir");
+        unir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unirActionPerformed(evt);
+            }
+        });
 
-        jButton6.setBackground(new java.awt.Color(153, 153, 153));
-        jButton6.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setText("Agregar");
+        agregarCiudad.setBackground(new java.awt.Color(153, 153, 153));
+        agregarCiudad.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        agregarCiudad.setForeground(new java.awt.Color(255, 255, 255));
+        agregarCiudad.setText("Agregar");
+        agregarCiudad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarCiudadActionPerformed(evt);
+            }
+        });
 
         jLabel17.setFont(new java.awt.Font("Sitka Heading", 0, 18)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Eliminar");
 
-        jComboBox5.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox5.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox5.setMaximumRowCount(111);
-        jComboBox5.setEnabled(false);
+        cBoxEliminarCiudad.setBackground(new java.awt.Color(204, 204, 204));
+        cBoxEliminarCiudad.setForeground(new java.awt.Color(0, 0, 0));
+        cBoxEliminarCiudad.setMaximumRowCount(111);
 
-        jComboBox6.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox6.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox6.setMaximumRowCount(111);
-        jComboBox6.setEnabled(false);
+        cBoxSegundaCiudad.setBackground(new java.awt.Color(204, 204, 204));
+        cBoxSegundaCiudad.setForeground(new java.awt.Color(0, 0, 0));
+        cBoxSegundaCiudad.setMaximumRowCount(111);
 
-        jButton7.setBackground(new java.awt.Color(153, 153, 153));
-        jButton7.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jButton7.setForeground(new java.awt.Color(255, 255, 255));
-        jButton7.setText("Eliminar Ciudad");
+        eliminarCiudad.setBackground(new java.awt.Color(153, 153, 153));
+        eliminarCiudad.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        eliminarCiudad.setForeground(new java.awt.Color(255, 255, 255));
+        eliminarCiudad.setText("Eliminar Ciudad");
+        eliminarCiudad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarCiudadActionPerformed(evt);
+            }
+        });
 
-        jButton8.setBackground(new java.awt.Color(153, 153, 153));
-        jButton8.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setText("Eliminar Camino");
+        eliminarCamino.setBackground(new java.awt.Color(153, 153, 153));
+        eliminarCamino.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        eliminarCamino.setForeground(new java.awt.Color(255, 255, 255));
+        eliminarCamino.setText("Eliminar Camino");
+        eliminarCamino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarCaminoActionPerformed(evt);
+            }
+        });
 
         jLabel18.setFont(new java.awt.Font("Sitka Heading", 0, 18)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Definir Recorrido");
         jLabel18.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jComboBox8.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox8.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox8.setMaximumRowCount(111);
-        jComboBox8.setEnabled(false);
+        cBoxInicio.setBackground(new java.awt.Color(204, 204, 204));
+        cBoxInicio.setForeground(new java.awt.Color(0, 0, 0));
+        cBoxInicio.setMaximumRowCount(111);
 
         jLabel19.setFont(new java.awt.Font("Sitka Text", 0, 14)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
@@ -166,18 +208,17 @@ public class EditarMapa extends javax.swing.JPanel {
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("Meta");
 
-        jComboBox9.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox9.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox9.setMaximumRowCount(111);
-        jComboBox9.setEnabled(false);
+        cBoxMeta.setBackground(new java.awt.Color(204, 204, 204));
+        cBoxMeta.setForeground(new java.awt.Color(0, 0, 0));
+        cBoxMeta.setMaximumRowCount(111);
 
-        jButton9.setBackground(new java.awt.Color(153, 153, 153));
-        jButton9.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jButton9.setForeground(new java.awt.Color(255, 255, 255));
-        jButton9.setText("Definir");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        definir.setBackground(new java.awt.Color(153, 153, 153));
+        definir.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        definir.setForeground(new java.awt.Color(255, 255, 255));
+        definir.setText("Definir");
+        definir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                definirActionPerformed(evt);
             }
         });
 
@@ -190,7 +231,7 @@ public class EditarMapa extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(56, 56, 56)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cBoxCiudadesAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(34, 34, 34)
                                 .addComponent(jLabel2))))
@@ -206,21 +247,21 @@ public class EditarMapa extends javax.swing.JPanel {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                                                    .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                    .addComponent(eliminarCiudad, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                                                    .addComponent(cBoxEliminarCiudad, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addGap(145, 145, 145))
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(cBoxInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jButton9)
+                                                .addComponent(definir)
                                                 .addGap(31, 31, 31)))
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                                            .addComponent(jComboBox9, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jComboBox4, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                            .addComponent(eliminarCamino, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                                            .addComponent(cBoxMeta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(cBoxEliminarCamino, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jComboBox3, 0, 151, Short.MAX_VALUE)
+                                            .addComponent(cBoxPrimeraCiudad, 0, 151, Short.MAX_VALUE)
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                                 .addGap(24, 24, 24)
                                                 .addComponent(jLabel14)))
@@ -233,14 +274,14 @@ public class EditarMapa extends javax.swing.JPanel {
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(unir, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(distanciaUnir, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addComponent(distanciaNueva, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(38, 38, 38)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                                    .addComponent(agregarCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cBoxSegundaCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(85, 85, 85)
                                 .addComponent(jLabel19)
@@ -264,9 +305,9 @@ public class EditarMapa extends javax.swing.JPanel {
                     .addComponent(jLabel13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6))
+                    .addComponent(distanciaNueva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cBoxCiudadesAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(agregarCiudad))
                 .addGap(32, 32, 32)
                 .addComponent(jLabel11)
                 .addGap(18, 18, 18)
@@ -274,36 +315,36 @@ public class EditarMapa extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cBoxPrimeraCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel16))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(distanciaUnir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cBoxSegundaCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
+                .addComponent(unir)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cBoxEliminarCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cBoxEliminarCamino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton7)
-                            .addComponent(jButton8))
+                            .addComponent(eliminarCiudad)
+                            .addComponent(eliminarCamino))
                         .addGap(43, 43, 43)
                         .addComponent(jLabel18)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton9))
+                            .addComponent(cBoxInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cBoxMeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(definir))
                         .addContainerGap(34, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -330,32 +371,64 @@ public class EditarMapa extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void distanciaNuevaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distanciaNuevaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_distanciaNuevaActionPerformed
 
-    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+    private void distanciaUnirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distanciaUnirActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9ActionPerformed
+    }//GEN-LAST:event_distanciaUnirActionPerformed
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton9ActionPerformed
+    private void definirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_definirActionPerformed
+        App.setRecorrido(cBoxInicio.getSelectedIndex(), cBoxMeta.getSelectedIndex());
+        this.actualizarComboboxCiudades();
+        App.cargarVisualizador();
+        actualizarMiniGrafo();
+    }//GEN-LAST:event_definirActionPerformed
+
+    private void agregarCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCiudadActionPerformed
+        
+        Double distancia=Double.parseDouble(distanciaNueva.getText());
+        App.agregarCiudad(cBoxCiudadesAgregar.getSelectedIndex(),distancia);
+        this.actualizarComboboxCiudades();
+        actualizarMiniGrafo();
+       
+    }//GEN-LAST:event_agregarCiudadActionPerformed
+
+    private void unirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unirActionPerformed
+        Double distancia=Double.parseDouble(distanciaUnir.getText());
+        App.enlazarCiudades(cBoxPrimeraCiudad.getSelectedIndex(), cBoxSegundaCiudad.getSelectedIndex(), distancia);
+        this.actualizarComboboxCiudades();
+        actualizarMiniGrafo();
+    }//GEN-LAST:event_unirActionPerformed
+
+    private void eliminarCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCiudadActionPerformed
+        App.eliminarCiudad(cBoxEliminarCiudad.getSelectedIndex());
+        this.actualizarComboboxCiudades();
+        actualizarMiniGrafo();
+    }//GEN-LAST:event_eliminarCiudadActionPerformed
+
+    private void eliminarCaminoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCaminoActionPerformed
+        App.eliminarArista(cBoxEliminarCamino.getSelectedIndex());
+        this.actualizarComboboxCiudades();
+        actualizarMiniGrafo();
+    }//GEN-LAST:event_eliminarCaminoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JComboBox<String> jComboBox8;
-    private javax.swing.JComboBox<String> jComboBox9;
+    private javax.swing.JButton agregarCiudad;
+    private javax.swing.JComboBox<String> cBoxCiudadesAgregar;
+    private javax.swing.JComboBox<String> cBoxEliminarCamino;
+    private javax.swing.JComboBox<String> cBoxEliminarCiudad;
+    private javax.swing.JComboBox<String> cBoxInicio;
+    private javax.swing.JComboBox<String> cBoxMeta;
+    private javax.swing.JComboBox<String> cBoxPrimeraCiudad;
+    private javax.swing.JComboBox<String> cBoxSegundaCiudad;
+    private javax.swing.JButton definir;
+    private javax.swing.JTextField distanciaNueva;
+    private javax.swing.JTextField distanciaUnir;
+    private javax.swing.JButton eliminarCamino;
+    private javax.swing.JButton eliminarCiudad;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -368,7 +441,6 @@ public class EditarMapa extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JButton unir;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,7 +9,7 @@ package estructuras;
  * @author Leonardo
  */
 public class Ciudad<T> {
-    private static int autoincremental=0;
+    public static int autoincremental=0;
     private int id =0;
     private ListaDoble aristas;
 
@@ -24,4 +24,9 @@ public class Ciudad<T> {
     public int getId(){
         return id;
     }
+    public String toString(){
+        return "Ciudad"+" "+this.getId();
+    }
+   
+    
 }

@@ -12,13 +12,18 @@ public class Hormiga {
     private double recorrido;
     private ListaDoble aristasVisitadas;
     private ListaDoble ciudadesVisitadas;
+    private Boolean destinoAlcanzado;
     public Hormiga(){
         recorrido=0;
         aristasVisitadas=new ListaDoble();
         ciudadesVisitadas=new ListaDoble();
+        destinoAlcanzado=false;
     }
     public ListaDoble getCiudadesVisitadas(){
         return ciudadesVisitadas;
+    }
+    public Boolean getAlcanzado(){
+        return destinoAlcanzado;
     }
     public ListaDoble getAristasVisitadas(){
         return aristasVisitadas;
@@ -28,6 +33,7 @@ public class Hormiga {
         while (true){
             ciudadesVisitadas.append((ciudadActual));
             if (ciudadActual==grafo.getMeta()){
+                destinoAlcanzado=true; 
                 break;
             }
             ListaDoble listaAuxiliar=new ListaDoble();
@@ -53,10 +59,9 @@ public class Hormiga {
                 }
                 double aleatorio=Math.random();
                 nodoAuxiliar=listaAuxiliar.getFirstNodo();
-                //System.out.println("nuevo aleatorio "+ aleatorio);
 
                 while (nodoAuxiliar!=null){
-                    System.out.println("prob "+(Math.pow(((Arista)(nodoAuxiliar.get())).getFeromona(),alfa)*Math.pow(calcularN((Arista)(nodoAuxiliar.get()),q),beta)/total));
+                    
                     
                     if(aleatorio<=parcial+(Math.pow(((Arista)(nodoAuxiliar.get())).getFeromona(),alfa)*Math.pow(calcularN((Arista)(nodoAuxiliar.get()),q),beta)/total)){
                         recorrido+=((Arista)nodoAuxiliar.get()).getDistancia();

@@ -30,13 +30,38 @@ public class Grafo<T> {
     public ListaDoble getTodasAristas(){
         return this.todasAristas;
     }
+    public ListaDoble getVertices(){
+        return vertices;
+    }
+    public int getTamaño(){
+        return tamaño;
+    }
+    public String[] boxCiudades(){
+        String[] out = new String[this.getTamaño()];
+        
+        return out;
+    }
     public void agregarArista(int ciudad1, int ciudad2,double distancia){
+        
         Ciudad seleccion1=(Ciudad) vertices.searchByIndex(ciudad1).get();
         Ciudad seleccion2=(Ciudad) vertices.searchByIndex(ciudad2).get();
-        Arista nArista= new Arista(seleccion1,seleccion2,distancia);
-        seleccion1.getAristas().append(nArista);
-        seleccion2.getAristas().append(nArista);
-        todasAristas.append(nArista);
+        NodoDoble aux= todasAristas.getFirstNodo();
+        Boolean yaExistente=false;
+        while (aux!=null ){
+            if ((((Arista)aux.get()).getC1()==seleccion1 && ((Arista)aux.get()).getC2()==seleccion2 )|| (((Arista)aux.get()).getC1()==seleccion2 && ((Arista)aux.get()).getC2()==seleccion1)){
+                ((Arista)aux.get()).setDistancia(distancia);
+                yaExistente=true;
+                break;
+            }
+            aux= aux.nNext();    
+        }
+        if (!yaExistente){
+            Arista nArista= new Arista(seleccion1,seleccion2,distancia);
+            seleccion1.getAristas().append(nArista);
+            seleccion2.getAristas().append(nArista);
+            todasAristas.append(nArista);
+        }
+        
     }
     public void eliminarVertice(int indiceVertice){
        Ciudad pCiudad=(Ciudad)vertices.searchByIndex(indiceVertice).get();
@@ -47,6 +72,7 @@ public class Grafo<T> {
            aux1=aux1.nNext();
        }
        vertices.deleteByIndex(indiceVertice);
+       tamaño-=1;
        
     }
     public void eliminarArista(Arista eArista){
@@ -54,6 +80,7 @@ public class Grafo<T> {
        Ciudad c2=eArista.getC2();
        c1.getAristas().deleteByKey(eArista);
        c2.getAristas().deleteByKey(eArista);
+       todasAristas.deleteByKey(eArista);
        
     }
     public void cerrarCiclo(Hormiga hormiga){

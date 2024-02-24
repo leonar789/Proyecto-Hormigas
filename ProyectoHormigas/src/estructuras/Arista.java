@@ -14,12 +14,13 @@ public class Arista {
     private Ciudad ciudad1;
     private Ciudad ciudad2;
     private double feromona;
-    private double visibilidad;
+    private String resumen;
     public Arista(Ciudad primeraCiudad,Ciudad segundaCiudad, double d){
         this.ciudad1=primeraCiudad;
         this.ciudad2=segundaCiudad;
         this.distancia=d;
         this.feromona=0.1;
+        this.resumen=""+primeraCiudad.getId()+segundaCiudad.getId();
     }
     public Ciudad getC1(){
         return ciudad1;
@@ -27,14 +28,17 @@ public class Arista {
     public Ciudad getC2(){
         return ciudad2;
     }
+    public String getResumen(){
+        return resumen;
+    }
     public double getDistancia(){
         return distancia;
     }
     public double getFeromona(){
         return feromona;
     }
-    public void setFeromona(double nFeromona){
-        this.feromona=nFeromona;
+    public void setFeromona(int ciclos){
+        this.feromona=1/Double.valueOf(ciclos);
     }
     public void evaporacion(double constanteEv){
         System.out.println("Antes de evaporar "+feromona);
@@ -45,5 +49,11 @@ public class Arista {
         feromona+=q/hormiga.getRecorrido();
         System.out.println("recorrido de la hormiga "+hormiga.getRecorrido());
         System.out.println("feromona incrementada "+feromona);
+    }
+    public String toString(){
+        return ""+ciudad1.getId()+" - "+ciudad2.getId();
+    }
+    public void setDistancia(double dist){
+        distancia=dist;
     }
 }

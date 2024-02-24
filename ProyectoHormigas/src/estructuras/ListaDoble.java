@@ -253,7 +253,33 @@ public class ListaDoble<T> {
             this.len--;
         }
     }
-
+    public String[] ciudadesToArray(){
+        NodoDoble aux=pFirst;
+        String[] out = new String[this.getLen()];
+        for (int i=0;i <this.getLen();i++){
+            out[i]=((Ciudad)(aux.get())).toString();
+            aux=aux.nNext();
+        }
+        return out;
+    }
+    public String[] aristasToArray(){
+        NodoDoble aux=pFirst;
+        String[] out = new String[this.getLen()];
+        for (int i=0;i <this.getLen();i++){
+            out[i]=((Arista)(aux.get())).toString();
+            aux=aux.nNext();
+        }
+        return out;
+    }
+    public String[] hormigasToArray(){
+        NodoDoble aux=pFirst;
+        String[] out = new String[this.getLen()];
+        for (int i=0;i <this.getLen();i++){
+            out[i]="Hormiga "+i;
+            aux=aux.nNext();
+        }
+        return out;
+    }
 
     public void deleteByIndex(int index) {
         if (index==0){
@@ -263,7 +289,7 @@ public class ListaDoble<T> {
             this.deleteLastone();
         }
         else if (index<len-1){
-            NodoDoble<T> aux=this.searchByIndex(index-1);
+            NodoDoble<T> aux=this.searchByIndex(index);
             this.delete(aux);
         }
     }
@@ -279,42 +305,13 @@ public class ListaDoble<T> {
             aux=aux.nNext();
             }
                 
-    }
-            
-           
-            
-        
-    
-
-
+    }        
     public int getLen() {
         return this.len;
     }
 
 
-    public void arrayToList(T[] array) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-
-    public int count(T dato) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-
-    public int suma() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-
-    public void eliminarRepetidos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-
-    public void replace(T oldKey, T newKey) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
     
     
 }
