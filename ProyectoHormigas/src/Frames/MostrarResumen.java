@@ -6,7 +6,7 @@ package Frames;
 
 import static Frames.PrincipalFrame.pnl_iniciarSimulacion;
 import static Frames.PrincipalFrame.vista;
-import static Frames.PrincipalFrame.vistaPrincipal;
+import static Frames.PrincipalFrame.visualizador;
 import static Frames.PrincipalFrame.vista_grafo;
 import static Frames.PrincipalFrame.visualizador;
 import estructuras.App;
@@ -342,8 +342,8 @@ public class MostrarResumen extends javax.swing.JPanel {
     }//GEN-LAST:event_pActionPerformed
 
     private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
-        vistaPrincipal.add(pnl_iniciarSimulacion,"simulacion");
-        vista.show(vistaPrincipal, "simulacion");
+        visualizador.add(pnl_iniciarSimulacion,"simulacion");
+        vista.show(visualizador, "simulacion");
         App.cargarVisualizador();
         visualizador.add(App.verGrafo(),"vista_pequeña");
         vista_grafo.show(visualizador, "vista_pequeña");

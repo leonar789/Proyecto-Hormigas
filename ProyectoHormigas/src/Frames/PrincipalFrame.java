@@ -17,10 +17,10 @@ public class PrincipalFrame extends javax.swing.JFrame {
     /**
      * Creates new form PrincipalFrame
      */
-    IniciarSimulacion pnl_iniciarSimulacion;
-    EditarMapa pnl_editarMapa;
+    static IniciarSimulacion pnl_iniciarSimulacion;
+    static EditarMapa pnl_editarMapa;
     Visualizador_Grafo pnl_visor;
-    CardLayout vista;
+    static CardLayout vista;
     static CardLayout vista_grafo;
     
     static App app;
