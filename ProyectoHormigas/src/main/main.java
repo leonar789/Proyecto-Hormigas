@@ -15,6 +15,8 @@ public class main {
     /**
      * @param args the command line arguments
      */
+    
+    //se inicializa la ventana principal lo que pone en marcha el programa
     public static void main(String[] args) {
         PrincipalFrame frame= new PrincipalFrame();
         frame.setLocationRelativeTo(null);
