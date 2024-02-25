@@ -99,7 +99,18 @@ public class ListaDoble<T> {
             return valor;
         }
     }
-
+    public int buscarIndiceCiudad(int id){
+        NodoDoble<T> aux= pFirst;
+        int contador=0;
+        while (aux!=Ultimo()){
+            if(((Ciudad)aux.get()).getId()==id){
+                return contador;
+            }
+            contador+=1;
+            aux=aux.nNext();
+        }
+        return -1;
+    }
 
    
     public Boolean isPresent(T key) {

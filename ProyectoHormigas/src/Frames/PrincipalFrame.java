@@ -20,8 +20,8 @@ public class PrincipalFrame extends javax.swing.JFrame {
      */
     static IniciarSimulacion pnl_iniciarSimulacion;
     EditarMapa pnl_editarMapa;
-
-
+    CargarArchivo pnl_cargarArchivo;
+    GuardarArchivo pnl_guardarArchivo;
     static CardLayout vista;
     static CardLayout vista_grafo;
     
@@ -33,7 +33,8 @@ public class PrincipalFrame extends javax.swing.JFrame {
         App.iniciarGrafo();
         pnl_iniciarSimulacion = new IniciarSimulacion();
         pnl_editarMapa= new EditarMapa();
-        
+        pnl_guardarArchivo=new GuardarArchivo();
+        pnl_cargarArchivo=new CargarArchivo();
         
     }
     public void actualizarComboboxCiudades(){
@@ -72,7 +73,6 @@ public class PrincipalFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        agregarCiudad = new javax.swing.JButton();
         visualizador = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -112,12 +112,22 @@ public class PrincipalFrame extends javax.swing.JFrame {
         cargarMapa.setForeground(new java.awt.Color(0, 0, 0));
         cargarMapa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carga_pequeño.png"))); // NOI18N
         cargarMapa.setText("Cargar Mapa");
+        cargarMapa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarMapaActionPerformed(evt);
+            }
+        });
 
         guardarMapa.setBackground(new java.awt.Color(204, 204, 204));
         buttonGroup1.add(guardarMapa);
         guardarMapa.setForeground(new java.awt.Color(0, 0, 0));
         guardarMapa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/save_pequeño.png"))); // NOI18N
         guardarMapa.setText("Guardar Mapa");
+        guardarMapa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarMapaActionPerformed(evt);
+            }
+        });
 
         verGrafo.setBackground(new java.awt.Color(204, 204, 204));
         buttonGroup1.add(verGrafo);
@@ -192,18 +202,7 @@ public class PrincipalFrame extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(31, 31, 31));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/leyenda (1).png"))); // NOI18N
-        jLabel3.setText("jLabel3");
-
-        agregarCiudad.setBackground(new java.awt.Color(153, 153, 153));
-        agregarCiudad.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        agregarCiudad.setForeground(new java.awt.Color(255, 255, 255));
-        agregarCiudad.setText("Agregar");
-        agregarCiudad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                agregarCiudadActionPerformed(evt);
-            }
-        });
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Leyenda Final.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -211,21 +210,15 @@ public class PrincipalFrame extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(agregarCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel3)
                 .addGap(15, 15, 15))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(agregarCiudad)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         visualizador.setLayout(new java.awt.CardLayout());
@@ -319,11 +312,6 @@ public class PrincipalFrame extends javax.swing.JFrame {
         this.repaint();
     }//GEN-LAST:event_verGrafoActionPerformed
 
-    private void agregarCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCiudadActionPerformed
-
-        
-    }//GEN-LAST:event_agregarCiudadActionPerformed
-
     private void eliminarMapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarMapaActionPerformed
         Ciudad.autoincremental=0;
         App.iniciarGrafo();
@@ -336,17 +324,34 @@ public class PrincipalFrame extends javax.swing.JFrame {
         pnl_editarMapa.actualizarComboboxCiudades();
     }//GEN-LAST:event_eliminarMapaActionPerformed
 
+    private void cargarMapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarMapaActionPerformed
+        App.cargarGrafo(this);
+        pnl_editarMapa.actualizarComboboxCiudades();  
+        vistaPrincipal.add(pnl_cargarArchivo,"cargar");
+        vista.show(vistaPrincipal, "cargar");
+        SwingUtilities.updateComponentTreeUI(this);
+        this.repaint();
+        pnl_editarMapa.actualizarMiniGrafo();
+    }//GEN-LAST:event_cargarMapaActionPerformed
+
+    private void guardarMapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarMapaActionPerformed
+        App.guardarGrafo(this);
+        vistaPrincipal.add(pnl_guardarArchivo,"guardar");
+        vista.show(vistaPrincipal, "guardar");
+        SwingUtilities.updateComponentTreeUI(this);
+        this.repaint();
+    }//GEN-LAST:event_guardarMapaActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton agregarCiudad;
     public static javax.swing.JToggleButton boton_editarMapa;
     private javax.swing.JToggleButton boton_iniciarSimulacion;
     private javax.swing.ButtonGroup buttonGroup1;
     public static javax.swing.JToggleButton cargarMapa;
-    private javax.swing.JToggleButton eliminarMapa;
+    public static javax.swing.JToggleButton eliminarMapa;
     public static javax.swing.JToggleButton guardarMapa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

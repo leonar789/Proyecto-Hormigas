@@ -5,9 +5,18 @@
 package estructuras;
 
 import Frames.EditarMapa;
+import static Frames.IniciarSimulacion.recorridoHormiga;
 import Frames.PrincipalFrame;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.View;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -27,6 +36,7 @@ import org.graphstream.ui.view.Viewer;
  */
 public class App {
     public static Grafo grafo;
+    public static Grafo grafo2;
     public static int cicloActual;
     public static int cicloFinal;
     public static Graph visualizador;
@@ -57,7 +67,6 @@ public class App {
         viewer.enableAutoLayout();
         ViewPanel view = viewer.addDefaultView(false);   // false indicates "no JFrame".
         
-        //Viewer viewer2 = visualizador.display();
         return view;
     }
     public static void indicarCiclos(int ciclos){
@@ -77,13 +86,16 @@ public class App {
         for (int j=0;j<cHormigas;j++){
             hormigas.append(new Hormiga());
         }
-        mejorRecorridoCiclo=(Hormiga)hormigas.getFirstNodo().get();
+        mejorRecorridoCiclo=null;
         hormi=hormigas.getFirstNodo();
         while(hormi!=null){
             //System.out.println("Nueva hormiga");
             ((Hormiga)hormi.get()).iniciarRecorrido(grafo, a, b, q);
             if (((Hormiga)(hormi.get())).getAlcanzado()){
-                if (((Hormiga)hormi.get()).getRecorrido()<mejorRecorridoCiclo.getRecorrido() || !mejorRecorridoCiclo.getAlcanzado()){
+                if (mejorRecorridoCiclo==null){
+                    mejorRecorridoCiclo=((Hormiga)hormi.get());
+                }
+                else if (((Hormiga)hormi.get()).getRecorrido()<mejorRecorridoCiclo.getRecorrido()){
                     mejorRecorridoCiclo=((Hormiga)hormi.get());
                 }
                 if (mejorRecorridoSimulacion==null){
@@ -129,7 +141,7 @@ public class App {
         while (aux1!=null){
    
         visualizador.addEdge(""+(int)((Arista)aux1.get()).getC1().getId()+""+(int)((Arista)aux1.get()).getC2().getId(), ""+(int)((Arista)aux1.get()).getC1().getId(), ""+(int)((Arista)aux1.get()).getC2().getId());
-        visualizador.getEdge(""+(int)((Arista)aux1.get()).getC1().getId()+""+(int)((Arista)aux1.get()).getC2().getId()).addAttribute("distancia",((Arista)aux1.get()).getDistancia() );
+        visualizador.getEdge(""+(int)((Arista)aux1.get()).getC1().getId()+""+(int)((Arista)aux1.get()).getC2().getId()).addAttribute("distancia","D: "+((Arista)aux1.get()).getDistancia() );
         visualizador.getEdge(""+(int)((Arista)aux1.get()).getC1().getId()+""+(int)((Arista)aux1.get()).getC2().getId()).addAttribute("feromona","F: "+formato.format(((Arista)aux1.get()).getFeromona()) );
         aux1=aux1.nNext();
         }
@@ -201,7 +213,11 @@ public class App {
     }
     public static void verRecorridoHormiga(int index){
         Hormiga hormiga=(Hormiga)hormigas.searchByIndex(index).get();
+        recorridoHormiga.setText(""+hormiga.getRecorrido());
         App.alumbrarRecorrido(hormiga);
+    }
+    public static void reiniciarMejorCamino(){
+        mejorRecorridoSimulacion=null;
     }
     public static void reiniciarMarcados(){
         for(Edge e:visualizador.getEachEdge()) {
@@ -225,5 +241,83 @@ public class App {
             aux=aux.nNext();
         }
     }
+    public static void cargarGrafo(PrincipalFrame a){
+        App.grafo = new Grafo(20);
+        Ciudad.autoincremental=0;
+        JFileChooser fc = new JFileChooser();
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
+        fc.setFileFilter(filtro);
+        int res = fc.showOpenDialog(a);
+        if(res != JFileChooser.CANCEL_OPTION){
+            File name = fc.getSelectedFile();
+            if((name == null) || name.getName().equals("")){
+                JOptionPane.showMessageDialog(null, "Error al abrir el archivo");
+        }else{
+            try {
+                FileReader archive = new FileReader(name.getAbsolutePath());
+                if(archive.ready()){
+                    BufferedReader lector = new BufferedReader(archive); 
+                    String cadena = lector.readLine();
+                    cadena = lector.readLine();
+                    while(!(cadena.equals("Aristas"))){
+                        grafo.agregarVertice();
+                        ((Ciudad)grafo.getVertices().getFinal()).setId(Integer.parseInt(cadena));
+                        Ciudad.autoincremental=Integer.parseInt(cadena)+1;
+                        cadena = lector.readLine();           
+                    }
+                    cadena = lector.readLine(); 
+                    while(true){
+                        double dist;
+                        if(cadena==null){
+                           break; 
+                        }else{
+                            dist = Double.parseDouble(cadena);
+                        }
+                        int c1 = Integer.parseInt(lector.readLine());
+                        int c2 = Integer.parseInt(lector.readLine());
+                        System.out.println(dist + "\n"   + c1 + "\n" + c2);
+                        grafo.agregarArista(grafo.getVertices().buscarIndiceCiudad(c1),grafo.getVertices().buscarIndiceCiudad(c2), dist);
+                        cadena=lector.readLine();
+                    }
+                    grafo.setInicio(0);
+                }
+                
+            } catch (IOException e){
+                    
+            }
+        }
+        }
+    }
     
+    public static void guardarGrafo(PrincipalFrame a){
+        JFileChooser gComo = new JFileChooser();
+        gComo.showSaveDialog(a);
+        File archivo = new File(gComo.getSelectedFile() + ".txt");
+        try {
+            BufferedWriter salida = new BufferedWriter(new FileWriter(archivo));
+            salida.write("ciudades");
+            for(int i = 0; i<grafo.getTamaño(); i++){
+                salida.newLine();
+                Ciudad city = (Ciudad)grafo.getVertices().getByIndex(i);
+                salida.write(String.valueOf(city.getId()));
+            }
+            salida.newLine();
+            salida.write("Aristas");
+            for(int i = 0; i<grafo.getTodasAristas().getLen(); i++){
+                Arista ar = (Arista)grafo.getTodasAristas().getByIndex(i);
+                salida.newLine();
+                salida.write(String.valueOf(ar.getDistancia()));
+                salida.newLine();
+                salida.write(String.valueOf(ar.getC1().getId()));
+                salida.newLine();
+                salida.write(String.valueOf(ar.getC2().getId()));
+            }
+            salida.newLine();
+            salida.write("");
+            salida.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar");
+        }
+    }
 }

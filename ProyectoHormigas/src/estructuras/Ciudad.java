@@ -27,6 +27,8 @@ public class Ciudad<T> {
     public String toString(){
         return "Ciudad"+" "+this.getId();
     }
-   
+    public void setId(int nId){
+        id=nId;
+    }
     
 }

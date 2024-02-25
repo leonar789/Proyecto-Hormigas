@@ -49,6 +49,7 @@ public class IniciarSimulacion extends javax.swing.JPanel {
         PrincipalFrame.verGrafo.setEnabled(false);
         PrincipalFrame.cargarMapa.setEnabled(false);
         PrincipalFrame.guardarMapa.setEnabled(false);
+        PrincipalFrame.eliminarMapa.setEnabled(false);
        
     }
     public void desbloquearLuegoSimulacion(){
@@ -65,6 +66,7 @@ public class IniciarSimulacion extends javax.swing.JPanel {
         PrincipalFrame.verGrafo.setEnabled(true);
         PrincipalFrame.cargarMapa.setEnabled(true);
         PrincipalFrame.guardarMapa.setEnabled(true);
+        PrincipalFrame.eliminarMapa.setEnabled(true);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -100,7 +102,7 @@ public class IniciarSimulacion extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        recorridoHormiga = new javax.swing.JTextField();
         cBoxHormigas = new javax.swing.JComboBox<>();
         verHormiga = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -320,13 +322,13 @@ public class IniciarSimulacion extends javax.swing.JPanel {
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Recorrido");
 
-        jTextField8.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField8.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextField8.setEnabled(false);
-        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+        recorridoHormiga.setBackground(new java.awt.Color(204, 204, 204));
+        recorridoHormiga.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        recorridoHormiga.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        recorridoHormiga.setEnabled(false);
+        recorridoHormiga.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField8ActionPerformed(evt);
+                recorridoHormigaActionPerformed(evt);
             }
         });
 
@@ -360,7 +362,7 @@ public class IniciarSimulacion extends javax.swing.JPanel {
                 .addGap(44, 44, 44)
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(recorridoHormiga, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(22, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
@@ -375,7 +377,7 @@ public class IniciarSimulacion extends javax.swing.JPanel {
                 .addGap(31, 31, 31)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(recorridoHormiga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -603,9 +605,9 @@ public class IniciarSimulacion extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cicloMetaActionPerformed
 
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+    private void recorridoHormigaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recorridoHormigaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
+    }//GEN-LAST:event_recorridoHormigaActionPerformed
 
     private void pActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pActionPerformed
         // TODO add your handling code here:
@@ -616,11 +618,17 @@ public class IniciarSimulacion extends javax.swing.JPanel {
         verHormiga.setEnabled(true);
         App.indicarCiclos(Integer.parseInt(ciclos.getText()));
         App.iniciarFeromonas(Integer.parseInt(ciclos.getText()));
+        App.reiniciarMejorCamino();
         App.iniciarCiclo(Integer.parseInt(hormigas.getText()), Double.valueOf(alfa.getText()), Double.valueOf(beta.getText()), Double.valueOf(q.getText()), Double.valueOf(p.getText()));
         actualizarComboboxHormigas();
         bloquearDuranteSimulacion();
         cicloActualText.setText(""+App.cicloActual);
-        textMejorRecorrido.setText(""+App.mejorRecorridoCiclo.getRecorrido());
+        if (App.mejorRecorridoCiclo!=null){
+            textMejorRecorrido.setText(""+App.mejorRecorridoCiclo.getRecorrido());
+        }
+        else{
+            textMejorRecorrido.setText("N.A");
+        }
         cicloMeta.setText(ciclos.getText());
         
         
@@ -639,14 +647,25 @@ public class IniciarSimulacion extends javax.swing.JPanel {
             
         }
         cicloActualText.setText(""+App.cicloActual);
-        textMejorRecorrido.setText(""+App.mejorRecorridoCiclo.getRecorrido());
+        if (App.mejorRecorridoCiclo!=null){
+            textMejorRecorrido.setText(""+App.mejorRecorridoCiclo.getRecorrido());
+        }
+        else{
+            textMejorRecorrido.setText("N.A");
+        }
+        
     }//GEN-LAST:event_siguienteCicloActionPerformed
 
     private void finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalizarActionPerformed
 
         App.finalizarRestantes(Integer.parseInt(hormigas.getText()), Double.valueOf(alfa.getText()), Double.valueOf(beta.getText()), Double.valueOf(q.getText()), Double.valueOf(p.getText()));
         cicloActualText.setText(""+App.cicloActual);
-        textMejorRecorrido.setText(""+App.mejorRecorridoCiclo.getRecorrido());
+        if (App.mejorRecorridoCiclo!=null){
+            textMejorRecorrido.setText(""+App.mejorRecorridoCiclo.getRecorrido());
+        }
+        else{
+            textMejorRecorrido.setText("N.A");
+        }
         desbloquearLuegoSimulacion();
         pnl_mostrarResumen.ciclos.setText(ciclos.getText());
         pnl_mostrarResumen.hormigas.setText(hormigas.getText());
@@ -654,9 +673,15 @@ public class IniciarSimulacion extends javax.swing.JPanel {
         pnl_mostrarResumen.beta.setText(beta.getText());
         pnl_mostrarResumen.q.setText(q.getText());
         pnl_mostrarResumen.p.setText(p.getText());
-        pnl_mostrarResumen.recorridoMasCorto.setText(""+App.mejorRecorridoSimulacion.getRecorrido());
-        pnl_mostrarResumen.mostrarRecorridoFinal();
-        App.alumbrarRecorrido(App.mejorRecorridoSimulacion);
+        if (App.mejorRecorridoSimulacion!=null){
+            pnl_mostrarResumen.recorridoMasCorto.setText(""+App.mejorRecorridoSimulacion.getRecorrido());
+            pnl_mostrarResumen.mostrarRecorridoFinal();
+            App.alumbrarRecorrido(App.mejorRecorridoSimulacion);
+        }
+        else{
+            pnl_mostrarResumen.recorridoMasCorto.setText("N.A");
+            
+        }
         PrincipalFrame.vistaPrincipal.add(pnl_mostrarResumen,"finalizarSimulacion");
         vista.show(PrincipalFrame.vistaPrincipal, "finalizarSimulacion");
         SwingUtilities.updateComponentTreeUI(this);
@@ -669,7 +694,10 @@ public class IniciarSimulacion extends javax.swing.JPanel {
     }//GEN-LAST:event_textMejorRecorridoActionPerformed
 
     private void verMejorRecorridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verMejorRecorridoActionPerformed
-        App.alumbrarRecorrido(App.mejorRecorridoCiclo);
+        if (App.mejorRecorridoCiclo!=null){
+            App.alumbrarRecorrido(App.mejorRecorridoCiclo);
+        }
+        
     }//GEN-LAST:event_verMejorRecorridoActionPerformed
 
 
@@ -701,12 +729,12 @@ public class IniciarSimulacion extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator1;
-    public static javax.swing.JTextField jTextField8;
     private javax.swing.JTextField p;
     private javax.swing.JTextField q;
+    public static javax.swing.JTextField recorridoHormiga;
     private javax.swing.JButton siguienteCiclo;
     private javax.swing.JLabel simulacion_terminada;
-    private javax.swing.JTextField textMejorRecorrido;
+    public static javax.swing.JTextField textMejorRecorrido;
     private javax.swing.JButton verHormiga;
     private javax.swing.JButton verMejorRecorrido;
     // End of variables declaration//GEN-END:variables
